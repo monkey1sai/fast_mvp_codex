@@ -1,18 +1,18 @@
 # Codex Supervisor MVP
 
-`codex-supervisor-mvp` is the root-level supervisor module for `C:\.codex_code_project`.
+`codex-supervisor-mvp` 是 `C:\.codex_code_project` 的 root 層級 supervisor 模組。
 
-It exists at the management root because it is cross-project infrastructure. It is not owned by any single managed repository.
+它位於管理根目錄，是因為這是跨專案基礎設施，不屬於任何單一受管 repository。
 
-## Responsibilities
+## 職責
 
-- wrap a Codex-like interactive process
-- watch stdout for allowlisted prompt patterns
-- send safe auto-replies through stdin when a rule matches
-- write reproducible session and audit logs to `state/`
-- support repo-specific policies stored inside managed repositories
+- 包住一個類似 Codex 的互動式程序
+- 監看 stdout 是否出現白名單規則中的提問模式
+- 命中規則時，透過 stdin 回送安全的自動回覆
+- 把可重現的 session log 與 audit log 寫入 `state/`
+- 支援受管 repo 自己維護的 policy 檔
 
-## Module Layout
+## 模組結構
 
 ```text
 codex-supervisor-mvp/
@@ -26,36 +26,36 @@ codex-supervisor-mvp/
   state/
 ```
 
-`state/` is runtime output only and should not be treated as source of truth.
+`state/` 只應視為執行期輸出，不應當成版本化真值。
 
-## Policy Model
+## Policy 模型
 
-- Global fallback policy: `scripts/default-policy.json`
-- Repo-specific policy: `<managed-repo>/.codex-supervisor/policy.json`
-- Repo-specific instructions: `<managed-repo>/.codex-supervisor/AGENTS.md`
+- 全域 fallback policy：`scripts/default-policy.json`
+- repo 專屬 policy：`<managed-repo>/.codex-supervisor/policy.json`
+- repo 專屬指令：`<managed-repo>/.codex-supervisor/AGENTS.md`
 
-The supervisor should only auto-reply to narrow allowlisted prompts. Unknown prompts should be logged, not answered automatically.
+supervisor 只應對狹義、白名單化的提問做自動回覆。未知問題應只記錄，不應自動回答。
 
-## Quick Start
+## 快速開始
 
-Run the local fake-agent test:
+先跑本地 fake-agent 測試：
 
 ```powershell
 python .\tests.py
 python .\supervisor.py --policy .\scripts\default-policy.json -- python .\scripts\fake_agent.py
 ```
 
-Run against a managed repository:
+對受管 repository 啟動：
 
 ```powershell
 Set-Location C:\.codex_code_project\repos\jacks_happy_bots
 python C:\.codex_code_project\codex-supervisor-mvp\supervisor.py --policy .\.codex-supervisor\policy.json -- codex --no-alt-screen
 ```
 
-On Windows, if the command is `codex`, the supervisor will try `codex.cmd` first.
+在 Windows 上，如果命令是 `codex`，supervisor 會優先嘗試解析成 `codex.cmd`。
 
-## Notes
+## 注意事項
 
-- `scripts/codex-notify.ps1` is for event capture, not reliable bidirectional control
-- prefer fixing workflow instructions and approval policy before adding more auto-reply rules
-- keep repo-specific policies in the managed repository, not in this root module
+- `scripts/codex-notify.ps1` 主要用於事件落盤，不是可靠的雙向控制 API
+- 若要降低提問量，優先改善 workflow 指令與 approval policy，不要先堆更多自動回覆規則
+- repo 專屬 policy 應留在該受管 repository 內，不要反向堆回 root 模組

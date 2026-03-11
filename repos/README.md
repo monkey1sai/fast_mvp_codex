@@ -1,18 +1,18 @@
-# Repos Registry
+# Repos 管理清單
 
-`repos/` is the canonical container for managed projects under `C:\.codex_code_project`.
+`repos/` 是 `C:\.codex_code_project` 底下所有受管專案的正式容器。
 
-## Rules
-- Add each managed repository as a direct child of `repos/`.
-- Register every project in `repos/index.json`.
-- Keep root-level routing in `.workspace/router.json` aligned with `repos/index.json`.
-- Do implementation work inside the target repository, not at the management root.
+## 規則
+- 每個受管 repository 都應是 `repos/` 的直接子目錄。
+- 每個專案都要登錄到 `repos/index.json`。
+- root 層級的 `.workspace/router.json` 應與 `repos/index.json` 保持一致。
+- 實際程式開發應在目標 repository 內進行，而不是在管理根目錄進行。
 
-## Current Projects
-- `jacks_happy_bots`: SAGA Brain operations repository
+## 目前專案
+- `jacks_happy_bots`：SAGA Brain 營運主專案
 
-## Update Checklist
-1. Place or clone the repository under `repos/<project-name>`.
-2. Add a project entry to `repos/index.json`.
-3. Update `.workspace/router.json` if the project should be routable from the root workspace.
-4. Update `.workspace/index.json` only if a new shared root-level index entry is needed.
+## 更新檢查清單
+1. 把新的 repository 放到 `repos/<project-name>`。
+2. 在 `repos/index.json` 新增一筆專案資料。
+3. 如果該專案需要由 root workspace 路由，更新 `.workspace/router.json`。
+4. 只有在需要新增 root 層共用索引時，才更新 `.workspace/index.json`。
