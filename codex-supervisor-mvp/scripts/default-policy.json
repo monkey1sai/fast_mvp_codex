@@ -1,0 +1,19 @@
+{
+  "rules": [
+    {
+      "name": "allow_repo_tests",
+      "match": "是否要執行測試|run tests|run the tests",
+      "reply": "可以，先執行 repo 內既有測試或靜態檢查，但不要安裝新套件。"
+    },
+    {
+      "name": "deny_network_by_default",
+      "match": "要不要連網查資料|use the web|browse the internet|search online",
+      "reply": "不要主動觸網，除非我明確要求。"
+    },
+    {
+      "name": "repo_only_changes",
+      "match": "可以修改設定檔嗎|change the config|modify config",
+      "reply": "可以修改 repo 內設定，但不要改使用者全域設定。"
+    }
+  ]
+}

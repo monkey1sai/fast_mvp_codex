@@ -1,0 +1,2 @@
+{"ts": "2026-03-11T13:14:40", "event": "auto_reply", "rule": "allow_repo_tests", "matched_line": "是否要執行測試？", "reply": "可以，先執行 repo 內既有測試或靜態檢查，但不要安裝新套件。"}
+{"ts": "2026-03-11T13:14:40", "event": "auto_reply", "rule": "deny_network_by_default", "matched_line": "要不要連網查資料？", "reply": "不要主動觸網或查 live 資料，除非我明確要求。"}

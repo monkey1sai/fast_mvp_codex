@@ -1,0 +1,16 @@
+# Root workspace hygiene
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
+
+# Local envs and runtime caches
+.env
+.env.*
+.venv/
+venv/
+
+# Keep nested managed repositories independent
+repos/*
+!repos/README.md
+!repos/index.json

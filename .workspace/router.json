@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "default_context": ".workspace/context.md",
+  "indexes": [
+    ".workspace/index.json"
+  ],
+  "routes": [
+    {
+      "path": ".",
+      "purpose": "multi-project management workspace",
+      "notes": "Root control plane for coordinating multiple repositories under C:\\.codex_code_project."
+    },
+    {
+      "path": "repos",
+      "purpose": "managed repositories",
+      "notes": "Place linked or nested repositories here when you want consistent routing."
+    },
+    {
+      "path": "repos/jacks_happy_bots",
+      "purpose": "existing project workspace",
+      "notes": "Current repository already has its own repo-local workspace."
+    }
+  ]
+}

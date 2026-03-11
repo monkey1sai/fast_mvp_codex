@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "id": "workspace_context",
+      "path": ".workspace/context.md",
+      "purpose": "Root AI workspace purpose, scope, and operating rules."
+    },
+    {
+      "id": "workspace_router",
+      "path": ".workspace/router.json",
+      "purpose": "Routing hints for choosing the correct managed project."
+    },
+    {
+      "id": "root_agents",
+      "path": "agents",
+      "purpose": "Shared lightweight role prompts for cross-project work."
+    },
+    {
+      "id": "managed_repos",
+      "path": "repos",
+      "purpose": "Container for repositories managed from this root workspace."
+    },
+    {
+      "id": "repos_registry",
+      "path": "repos/index.json",
+      "purpose": "Machine-readable registry of managed repositories."
+    },
+    {
+      "id": "active_project_example",
+      "path": "repos/jacks_happy_bots",
+      "purpose": "Existing project under this management root."
+    }
+  ],
+  "ignore_patterns": [
+    ".git",
+    "node_modules",
+    "dist",
+    "build",
+    ".venv",
+    "__pycache__"
+  ]
+}

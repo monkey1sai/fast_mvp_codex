@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "root": "C:\\.codex_code_project\\repos",
+  "projects": [
+    {
+      "id": "jacks_happy_bots",
+      "path": "repos/jacks_happy_bots",
+      "type": "git",
+      "active": true,
+      "has_workspace": true,
+      "remote": "git@github.com:monkey1sai/jacks_happy_bots.git",
+      "purpose": "SAGA Brain operations repository."
+    }
+  ]
+}

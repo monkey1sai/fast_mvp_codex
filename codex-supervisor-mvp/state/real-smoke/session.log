@@ -1,0 +1,21 @@
+OpenAI Codex v0.114.0 (research preview)
+--------
+workdir: C:\.codex_code_project\codex-supervisor-mvp
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: medium
+reasoning summaries: none
+session id: 019cdb41-6f6d-7760-8e1c-efc0d1f117e2
+--------
+user
+Reply with exactly SUPERVISED_OK.
+mcp: openaiDeveloperDocs starting
+mcp: openaiDeveloperDocs ready
+mcp startup: ready: openaiDeveloperDocs
+codex
+SUPERVISED_OK
+tokens used
+10,141
+SUPERVISED_OK
