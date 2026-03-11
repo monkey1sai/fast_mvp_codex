@@ -14,3 +14,7 @@ venv/
 repos/*
 !repos/README.md
 !repos/index.json
+
+# Root supervisor runtime artifacts
+codex-supervisor-mvp/state/*
+!codex-supervisor-mvp/state/.gitkeep

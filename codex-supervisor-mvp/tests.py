@@ -12,6 +12,9 @@ from supervisor import Policy
 
 ROOT = Path(__file__).resolve().parent
 DEFAULT_POLICY = ROOT / "scripts" / "default-policy.json"
+MANAGED_REPO_POLICY = (
+    ROOT.parent / "repos" / "jacks_happy_bots" / ".codex-supervisor" / "policy.json"
+)
 
 
 class PolicyTests(unittest.TestCase):
@@ -22,9 +25,8 @@ class PolicyTests(unittest.TestCase):
         self.assertEqual(rule.name, "allow_repo_tests")
 
     def test_policy_supports_reply_file(self) -> None:
-        repo_policy = Policy.load(
-            Path(r"C:\.codex_code_project\repos\jacks_happy_bots\.codex-supervisor\policy.json")
-        )
+        self.assertTrue(MANAGED_REPO_POLICY.exists(), msg=f"missing policy: {MANAGED_REPO_POLICY}")
+        repo_policy = Policy.load(MANAGED_REPO_POLICY)
         rule = repo_policy.match("我需要先問使用者")
         self.assertIsNotNone(rule)
         assert rule is not None
