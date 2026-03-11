@@ -3,6 +3,15 @@
   "root": "C:\\.codex_code_project\\repos",
   "projects": [
     {
+      "id": "aiezdxf",
+      "path": "repos/aiezdxf",
+      "type": "git",
+      "active": true,
+      "has_workspace": false,
+      "remote": "git@github.com:monkey1sai/aiezdxf.git",
+      "purpose": "AI EZDXF related application repository."
+    },
+    {
       "id": "jacks_happy_bots",
       "path": "repos/jacks_happy_bots",
       "type": "git",
