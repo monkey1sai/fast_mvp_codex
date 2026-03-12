@@ -25,6 +25,11 @@
       "id": "repos_registry",
       "path": "repos/index.json",
       "purpose": "Machine-readable registry of managed repositories."
+    },
+    {
+      "id": "pulse_ingestor_mvp",
+      "path": "repos/pulse-ingestor-mvp",
+      "purpose": "Managed repo for ChatGPT pulse email ingestion MVP."
     }
   ],
   "ignore_patterns": [

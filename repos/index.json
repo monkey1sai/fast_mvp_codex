@@ -1,5 +1,13 @@
 {
   "version": 1,
   "root": "C:\\.codex_code_project\\repos",
-  "projects": []
+  "projects": [
+    {
+      "id": "pulse_ingestor_mvp",
+      "name": "pulse-ingestor-mvp",
+      "path": "C:\\fast_mvp_codex\\repos\\pulse-ingestor-mvp",
+      "type": "managed-repo",
+      "purpose": "Passive ingestion of ChatGPT task emails into structured pulse events."
+    }
+  ]
 }
