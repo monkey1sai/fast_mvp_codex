@@ -2,6 +2,15 @@
 
 `pulse-ingestor-mvp` 是一個最小產品原型，用來被動接收 ChatGPT 個人 Pro 的排程 email，將其轉為可查詢、可累積、可供後續 LLM 決策使用的 pulse events。
 
+## Languages
+
+- 中文（目前檔案）
+- [English](README.en.md)
+- [ไทย](README.th.md)
+- [العربية](README.ar.md)
+- [Français](README.fr.md)
+- [Bahasa Indonesia](README.id.md)
+
 ## MVP Scope
 
 - 從專用信箱讀取未讀 email
@@ -235,6 +244,12 @@ tool_timeout_sec = 60
 If this project helps your workflow, consider sponsoring maintenance.
 If you need custom MCP, email-ingestion, or LLM decision-system integration, I also offer implementation and advisory services.
 ```
+
+可直接延伸使用的文案：
+
+- [GitHub Sponsors Profile Draft](docs/github-sponsors-profile.md)
+- [Services And Pricing Draft](docs/services-and-pricing.md)
+- [Profile And README CTA Draft](docs/profile-and-readme-cta.md)
 
 ## Environment Variables
 
