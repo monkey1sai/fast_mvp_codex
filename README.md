@@ -12,7 +12,6 @@ root repo 主要追蹤：
 - `.workspace/`：root AI workspace context 與路由資訊
 - `agents/`：共享輕量角色提示
 - `repos/index.json`：受管專案登錄
-- `codex-supervisor-mvp/`：root 層共享工具
 
 真正的產品開發與 git 歷史應保留在 `repos/<project-name>` 內的子 repository。
 
@@ -29,7 +28,6 @@ root repo 主要追蹤：
 C:\.codex_code_project
   .workspace/
   agents/
-  codex-supervisor-mvp/
   repos/
     index.json
     README.md
@@ -64,15 +62,8 @@ root repository 與每一個受管 repository 是刻意分開管理的。
 - root `.gitignore` 預設排除 nested repo 的內容
 - 專案程式碼的 `pull`、`merge`、`push` 應在子 repo 內執行
 
-## Supervisor
-
-`codex-supervisor-mvp/` 是 root 層級的 supervisor 專案，用來監督與輔助 agent-driven workflow。
-
-它屬於管理根目錄，是跨專案基礎設施，不屬於任何單一受管專案。
-
 ## Working Style
 
 - 在 root workspace 做方向收斂、路由與共享規則維護
 - 進入目標子 repo 後，優先完成最短的可上線路徑
 - 只有在確實能加快交付時，才把子 repo 掛回 root registry
-- 若使用 supervisor，policy 應由子 repo 顯式提供，而不是依賴 root 預設配置

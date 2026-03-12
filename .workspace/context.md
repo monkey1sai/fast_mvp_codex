@@ -14,7 +14,6 @@ Use this root when the task is about:
 Prefer entering the target repository for implementation work. Keep the root workspace small and focused on orchestration.
 
 ## Managed Paths
-- `repos/jacks_happy_bots`: existing repository with its own repo-local workspace
 - `repos/`: reserved for additional managed repositories
 - `agents/`: shared role prompts for planning, coding, review, and testing
 - `skills/`: root-level reusable skills if you decide to add them later
