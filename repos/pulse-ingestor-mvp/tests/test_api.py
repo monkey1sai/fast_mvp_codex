@@ -6,6 +6,7 @@ import unittest
 from pathlib import Path
 
 from fastapi.testclient import TestClient
+from app.services.decision_context import decision_context_payload
 
 
 class ApiTests(unittest.TestCase):
@@ -107,6 +108,19 @@ class ApiTests(unittest.TestCase):
         body = response.json()
         self.assertIn("enabled", body)
         self.assertIn("interval_seconds", body)
+
+    def test_mcp_decision_payload_helper(self) -> None:
+        payload = {
+            "source_message_id": "msg-mcp",
+            "raw_from": "OpenAI <noreply@tm.openai.com>",
+            "subject": "[Task update] AI SaaS opportunity",
+            "body": "From ChatGPT task update\nFound five small AI SaaS opportunities with pricing ideas\nhttps://chatgpt.com/c/test-mcp",
+            "received_at": "Thu, 12 Mar 2026 12:00:00 +0800",
+        }
+        self.client.post("/ingest/email", json=payload)
+        context = decision_context_payload(limit=5, min_decision_signal=0.3)
+        self.assertEqual(context["count"], 1)
+        self.assertEqual(context["items"][0]["task_title"], "AI SaaS opportunity")
 
 
 if __name__ == "__main__":

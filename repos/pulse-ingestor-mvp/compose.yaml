@@ -21,3 +21,28 @@ services:
       - ./app:/app/app
       - ./tests:/app/tests
     restart: unless-stopped
+
+  mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pulse-ingestor-mcp
+    env_file:
+      - .env
+    environment:
+      PULSE_DB_PATH: ${PULSE_DB_PATH:-/app/runtime/pulse.db}
+      PULSE_IMAP_HOST: ${PULSE_IMAP_HOST:-}
+      PULSE_IMAP_PORT: ${PULSE_IMAP_PORT:-993}
+      PULSE_IMAP_USERNAME: ${PULSE_IMAP_USERNAME:-}
+      PULSE_IMAP_PASSWORD: ${PULSE_IMAP_PASSWORD:-}
+      PULSE_IMAP_MAILBOX: ${PULSE_IMAP_MAILBOX:-INBOX}
+      PULSE_POLL_MAX_MESSAGES: ${PULSE_POLL_MAX_MESSAGES:-10}
+      PULSE_AUTO_POLL_ENABLED: ${PULSE_AUTO_POLL_ENABLED:-false}
+      PULSE_AUTO_POLL_INTERVAL_SECONDS: ${PULSE_AUTO_POLL_INTERVAL_SECONDS:-300}
+    command: ["python", "-m", "app.mcp_server"]
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./runtime:/app/runtime
+      - ./app:/app/app
+    restart: unless-stopped

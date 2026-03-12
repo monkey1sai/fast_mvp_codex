@@ -45,6 +45,7 @@ app/
 2. 在 repo 根目錄執行 `docker compose up --build`
 3. API 預設暴露在 `http://127.0.0.1:8000`
 4. SQLite 會寫到 `runtime/pulse.db`
+5. MCP server 會以 `stdio` 方式在 `mcp` service 內啟動
 
 常用命令：
 
@@ -52,6 +53,7 @@ app/
 - `docker compose down`
 - `docker compose logs -f api`
 - `docker compose exec -T api python -m unittest tests.test_api tests.test_parser -v`
+- `docker compose logs -f mcp`
 
 主要 API：
 
@@ -80,6 +82,16 @@ app/
 - 產出 `decision_signal_score` 供後續 LLM 決策使用
 
 若開啟 `PULSE_AUTO_POLL_ENABLED=true`，服務啟動後會依 `PULSE_AUTO_POLL_INTERVAL_SECONDS` 自動輪詢信箱。
+
+## MCP Tools
+
+`app.mcp_server` 會暴露：
+
+- `pulse_list`
+- `pulse_get`
+- `pulse_decision_context`
+- `pulse_poll_now`
+- `pulse_scheduler_status`
 
 ## Environment Variables
 
