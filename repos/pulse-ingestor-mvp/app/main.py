@@ -9,6 +9,8 @@ from fastapi import FastAPI, HTTPException
 from app.config import get_settings
 from app.db import init_db
 from app.schemas import (
+    BackfillRequest,
+    BackfillResponse,
     CleanupResponse,
     DecisionContextResponse,
     EmailIngestRequest,
@@ -19,7 +21,7 @@ from app.schemas import (
     SchedulerStatusResponse,
 )
 from app.services.filters import is_target_pulse_email
-from app.services.ingestor import poll_mailbox
+from app.services.ingestor import backfill_mailbox_history, poll_mailbox
 from app.services.parser import parse_email_to_pulse
 from app.services.scheduler import get_scheduler_snapshot, start_scheduler, stop_scheduler
 from app.services.storage import (
@@ -116,6 +118,14 @@ def ingest_email(payload: EmailIngestRequest) -> EmailIngestResponse:
 def ingest_from_mailbox() -> PollResponse:
     inserted, skipped = poll_mailbox()
     return PollResponse(inserted=inserted, skipped=skipped)
+
+
+@app.post("/admin/ingest/backfill", response_model=BackfillResponse)
+def backfill_history(payload: BackfillRequest) -> BackfillResponse:
+    settings = get_settings()
+    mailbox_name = payload.mailbox or settings.imap_processed_mailbox
+    inserted, skipped = backfill_mailbox_history(mailbox_name=mailbox_name, limit=payload.limit)
+    return BackfillResponse(mailbox=mailbox_name, inserted=inserted, skipped=skipped)
 
 
 @app.delete("/admin/pulses/non-target", response_model=CleanupResponse)

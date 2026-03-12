@@ -40,6 +40,17 @@ class PollResponse(BaseModel):
     skipped: int
 
 
+class BackfillRequest(BaseModel):
+    mailbox: str | None = None
+    limit: int | None = Field(default=None, ge=1, le=1000)
+
+
+class BackfillResponse(BaseModel):
+    mailbox: str
+    inserted: int
+    skipped: int
+
+
 class CleanupResponse(BaseModel):
     deleted: int
 

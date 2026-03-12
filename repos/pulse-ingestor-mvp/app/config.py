@@ -12,6 +12,8 @@ class Settings:
     imap_username: str
     imap_password: str
     imap_mailbox: str
+    imap_processed_mailbox: str
+    imap_move_on_success: bool
     poll_max_messages: int
     allowed_from_patterns: tuple[str, ...]
     allowed_subject_keywords: tuple[str, ...]
@@ -36,6 +38,8 @@ def get_settings() -> Settings:
         imap_username=os.getenv("PULSE_IMAP_USERNAME", ""),
         imap_password=os.getenv("PULSE_IMAP_PASSWORD", ""),
         imap_mailbox=os.getenv("PULSE_IMAP_MAILBOX", "INBOX"),
+        imap_processed_mailbox=os.getenv("PULSE_IMAP_PROCESSED_MAILBOX", "AI新聞脈動PLUS"),
+        imap_move_on_success=os.getenv("PULSE_IMAP_MOVE_ON_SUCCESS", "true").lower() in {"1", "true", "yes", "on"},
         poll_max_messages=int(os.getenv("PULSE_POLL_MAX_MESSAGES", "10")),
         allowed_from_patterns=_split_env(
             "PULSE_ALLOWED_FROM_PATTERNS",

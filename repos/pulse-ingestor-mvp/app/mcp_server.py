@@ -6,7 +6,7 @@ from fastmcp import FastMCP
 
 from app.db import init_db
 from app.services.decision_context import decision_context_payload, row_to_item
-from app.services.ingestor import poll_mailbox
+from app.services.ingestor import backfill_mailbox_history, poll_mailbox
 from app.services.scheduler import get_scheduler_snapshot
 from app.services.storage import get_pulse_event_by_id, list_pulse_events
 
@@ -57,6 +57,14 @@ def pulse_poll_now() -> dict[str, int]:
     init_db()
     inserted, skipped = poll_mailbox()
     return {"inserted": inserted, "skipped": skipped}
+
+
+@mcp.tool(name="pulse_backfill_history")
+def pulse_backfill_history(mailbox: str | None = None, limit: int | None = None) -> dict[str, Any]:
+    """Backfill historical pulse emails from the processed mailbox into local storage."""
+    init_db()
+    inserted, skipped = backfill_mailbox_history(mailbox_name=mailbox, limit=limit)
+    return {"mailbox": mailbox, "inserted": inserted, "skipped": skipped}
 
 
 @mcp.tool(name="pulse_scheduler_status")

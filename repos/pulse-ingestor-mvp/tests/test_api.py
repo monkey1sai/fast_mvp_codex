@@ -109,6 +109,18 @@ class ApiTests(unittest.TestCase):
         self.assertIn("enabled", body)
         self.assertIn("interval_seconds", body)
 
+    def test_backfill_endpoint_returns_counts(self) -> None:
+        from unittest.mock import patch
+
+        with patch("app.main.backfill_mailbox_history", return_value=(2, 3)):
+            response = self.client.post("/admin/ingest/backfill", json={"mailbox": "AI新聞脈動PLUS", "limit": 50})
+
+        self.assertEqual(response.status_code, 200)
+        body = response.json()
+        self.assertEqual(body["mailbox"], "AI新聞脈動PLUS")
+        self.assertEqual(body["inserted"], 2)
+        self.assertEqual(body["skipped"], 3)
+
     def test_mcp_decision_payload_helper(self) -> None:
         payload = {
             "source_message_id": "msg-mcp",

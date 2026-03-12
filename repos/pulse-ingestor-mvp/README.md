@@ -64,6 +64,7 @@ app/
 - `GET /scheduler/status`
 - `POST /ingest/email`
 - `POST /ingest/poll`
+- `POST /admin/ingest/backfill`
 - `DELETE /admin/pulses/non-target`
 - `POST /admin/pulses/rehydrate`
 
@@ -81,6 +82,12 @@ app/
 - 清掉通知 footer 後再產生 `summary`
 - 產出 `decision_signal_score` 供後續 LLM 決策使用
 
+成功 ingest 的目標郵件，預設會自動搬移到 `AI新聞脈動PLUS`。
+可透過以下環境變數調整：
+
+- `PULSE_IMAP_MOVE_ON_SUCCESS=true`
+- `PULSE_IMAP_PROCESSED_MAILBOX=AI新聞脈動PLUS`
+
 若開啟 `PULSE_AUTO_POLL_ENABLED=true`，服務啟動後會依 `PULSE_AUTO_POLL_INTERVAL_SECONDS` 自動輪詢信箱。
 
 ## MCP Tools
@@ -91,7 +98,11 @@ app/
 - `pulse_get`
 - `pulse_decision_context`
 - `pulse_poll_now`
+- `pulse_backfill_history`
 - `pulse_scheduler_status`
+
+`pulse_backfill_history` 預設會從 `AI新聞脈動PLUS` 讀取歷史信件並回補到 SQLite。
+這個動作是明確工具呼叫，不會在 MCP server 啟動時自動執行。
 
 ## Connect From Codex
 
@@ -127,6 +138,8 @@ app/
 - `PULSE_IMAP_USERNAME`
 - `PULSE_IMAP_PASSWORD`
 - `PULSE_IMAP_MAILBOX`
+- `PULSE_IMAP_PROCESSED_MAILBOX`
+- `PULSE_IMAP_MOVE_ON_SUCCESS`
 - `PULSE_POLL_MAX_MESSAGES`
 
 ## Next Steps
