@@ -93,6 +93,32 @@ app/
 - `pulse_poll_now`
 - `pulse_scheduler_status`
 
+## Connect From Codex
+
+這個 repo 已提供 repo-scoped MCP 設定檔 [`.codex/config.toml`](.codex/config.toml)。
+
+設計方式：
+
+- 由 Codex 以 `docker compose run --rm -T mcp python -m app.mcp_server` 啟動 stdio MCP
+- 不依賴本機 Python 直接安裝 `fastmcp`
+- 共用 repo 內的 `runtime/pulse.db` 與 `.env`
+
+使用方式：
+
+1. 在 repo 根目錄先執行 `docker compose up -d api`
+2. 重新開一個 Codex session，讓 repo-scoped `.codex/config.toml` 生效
+3. 下游 agent 即可呼叫：
+   - `pulse_list`
+   - `pulse_get`
+   - `pulse_decision_context`
+   - `pulse_poll_now`
+   - `pulse_scheduler_status`
+
+最小驗證：
+
+- `docker compose run --rm -T mcp python -c "import app.mcp_server; print('mcp-import-ok')"`
+- `docker compose ps`
+
 ## Environment Variables
 
 - `PULSE_DB_PATH`
