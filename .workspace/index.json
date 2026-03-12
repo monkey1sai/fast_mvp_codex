@@ -30,6 +30,11 @@
       "id": "pulse_ingestor_mvp",
       "path": "repos/pulse-ingestor-mvp",
       "purpose": "Managed repo for ChatGPT pulse email ingestion MVP."
+    },
+    {
+      "id": "coingecko_openclaw_mcp",
+      "path": "repos/coingecko-openclaw-mcp",
+      "purpose": "Managed repo for CoinGecko Pro MCP tools built for OpenClaw-compatible agents."
     }
   ],
   "ignore_patterns": [

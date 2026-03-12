@@ -8,7 +8,7 @@
     {
       "path": ".",
       "purpose": "multi-project management workspace",
-      "notes": "Root control plane for coordinating multiple repositories under C:\\.codex_code_project."
+      "notes": "Root control plane for coordinating multiple repositories under C:\\fast_mvp_codex."
     },
     {
       "path": "repos",
@@ -19,6 +19,11 @@
       "path": "repos/pulse-ingestor-mvp",
       "purpose": "ChatGPT pulse email ingestion MVP",
       "notes": "Use this repo for FastAPI, SQLite, IMAP polling, pulse parsing, and entropy scoring."
+    },
+    {
+      "path": "repos/coingecko-openclaw-mcp",
+      "purpose": "CoinGecko Pro MCP for OpenClaw-compatible crypto agents",
+      "notes": "Use this repo for stdio MCP development, CoinGecko Pro client code, and crypto market intelligence tools."
     }
   ]
 }

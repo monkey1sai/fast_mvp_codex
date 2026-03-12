@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "root": "C:\\.codex_code_project\\repos",
+  "root": "C:\\fast_mvp_codex\\repos",
   "projects": [
     {
       "id": "pulse_ingestor_mvp",
@@ -8,6 +8,13 @@
       "path": "C:\\fast_mvp_codex\\repos\\pulse-ingestor-mvp",
       "type": "managed-repo",
       "purpose": "Passive ingestion of ChatGPT task emails into structured pulse events."
+    },
+    {
+      "id": "coingecko_openclaw_mcp",
+      "name": "coingecko-openclaw-mcp",
+      "path": "C:\\fast_mvp_codex\\repos\\coingecko-openclaw-mcp",
+      "type": "managed-repo",
+      "purpose": "CoinGecko Pro market intelligence MCP server for OpenClaw-compatible agents."
     }
   ]
 }

@@ -12,7 +12,8 @@
 - 只有當 root 層配置能幫助更快交付時，才把專案掛回 root registry。
 
 ## 目前專案
-- 無已登錄專案
+- `pulse-ingestor-mvp`
+- `coingecko-openclaw-mcp`
 
 ## 更新檢查清單
 1. 把新的 repository 放到 `repos/<project-name>`。
