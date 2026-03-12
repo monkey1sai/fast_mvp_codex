@@ -16,11 +16,9 @@
 
 ```text
 codex-supervisor-mvp/
-  module.json
   supervisor.py
   tests.py
   scripts/
-    default-policy.json
     fake_agent.py
     codex-notify.ps1
   state/
@@ -30,7 +28,7 @@ codex-supervisor-mvp/
 
 ## Policy 模型
 
-- 全域 fallback policy：`scripts/default-policy.json`
+- 不再提供 root 層預設 policy 檔；啟動時需明確傳入 `--policy`
 - repo 專屬 policy：`<managed-repo>/.codex-supervisor/policy.json`
 - repo 專屬指令：`<managed-repo>/.codex-supervisor/AGENTS.md`
 
@@ -42,7 +40,7 @@ supervisor 只應對狹義、白名單化的提問做自動回覆。未知問題
 
 ```powershell
 python .\tests.py
-python .\supervisor.py --policy .\scripts\default-policy.json -- python .\scripts\fake_agent.py
+python .\supervisor.py --policy <path-to-policy.json> -- python .\scripts\fake_agent.py
 ```
 
 對受管 repository 啟動：

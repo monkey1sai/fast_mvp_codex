@@ -25,11 +25,6 @@
       "id": "repos_registry",
       "path": "repos/index.json",
       "purpose": "Machine-readable registry of managed repositories."
-    },
-    {
-      "id": "active_project_example",
-      "path": "repos/jacks_happy_bots",
-      "purpose": "Existing project under this management root."
     }
   ],
   "ignore_patterns": [

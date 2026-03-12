@@ -2,6 +2,9 @@
 
 `C:\.codex_code_project` 是用來管理多個 AI 輔助開發專案的根工作區。
 
+目前的開發方向是：以快速開發、可上線、可驗證的 MVP 為優先。
+目前的模型策略是：思考與規劃以 `gpt-5.4` 為主，程式實作以 `gpt-5.3-code` 為主。
+
 這個 root repo 主要追蹤共享的管理層內容：
 - `.workspace/` 內的 root AI workspace 檔案
 - `agents/` 內的共用輕量角色提示
@@ -20,7 +23,7 @@ C:\.codex_code_project
   repos/
     index.json
     README.md
-    jacks_happy_bots/   # 獨立 git repository
+    <project-name>/     # 可保留既有 repo，但不一定登錄到 root 配置
   skills/
 ```
 
@@ -29,7 +32,7 @@ C:\.codex_code_project
 所有受管專案都放在 `repos/` 底下，並保有各自獨立的 git 歷史與 remote。
 
 目前已登錄：
-- `repos/jacks_happy_bots`
+- 無
 
 參考檔案：
 - `repos/index.json`
@@ -45,20 +48,33 @@ root repository 與每一個受管 repository 是刻意分開管理的。
 - root `.gitignore` 預設排除 nested repo 的內容
 - 專案程式碼的 `pull`、`merge`、`push` 應在子 repo 內執行
 
+## MVP 優先原則
+
+- 先交付最小可上線閉環，再補完整性。
+- 優先處理會直接影響上線的功能、部署、驗證與回滾能力。
+- 非必要時不要先做通用化架構、過度拆模組、提早最佳化或大型重構。
+- 若 root 層工具無法直接幫助某個子 repo 更快上線，就不要在 root 層擴張複雜度。
+
+## 模型分工
+
+- `gpt-5.4`：用於需求釐清、方案比較、路由判斷、風險分析與任務拆解。
+- `gpt-5.3-code`：用於程式撰寫、補丁生成、局部重構、測試修補與實作落地。
+- 若任務同時包含思考與實作，先用 `gpt-5.4` 收斂方向，再以 `gpt-5.3-code` 執行變更。
+
 ## Supervisor
 
 `codex-supervisor-mvp/` 是 root 層級的 supervisor 專案，用來監督與輔助 agent-driven workflow。
 
-它屬於管理根目錄，是跨專案基礎設施，不屬於 `jacks_happy_bots` 單一專案。
+它屬於管理根目錄，是跨專案基礎設施，不屬於任何單一受管專案。
 
 ## 如何用 Supervisor 開發 Sub Repo
 
 `codex-supervisor-mvp` 應從 root workspace 提供，但實際執行時要針對目標 sub repo 啟動。
 
-以 `repos/jacks_happy_bots` 為例：
+以 `repos/<project-name>` 為例：
 
 ```powershell
-Set-Location C:\.codex_code_project\repos\jacks_happy_bots
+Set-Location C:\.codex_code_project\repos\<project-name>
 python C:\.codex_code_project\codex-supervisor-mvp\supervisor.py --policy .\.codex-supervisor\policy.json -- codex --no-alt-screen
 ```
 
@@ -76,7 +92,7 @@ python C:\.codex_code_project\codex-supervisor-mvp\supervisor.py --policy .\.cod
 
 ## 建議工作流程
 
-1. 在 root workspace 進行多專案路由與管理。
-2. 進入目標 repository 後再做實作。
-3. 新增受管 repo 時，同步更新 `repos/index.json`。
-4. 保持 `.workspace/router.json` 與目前有效的受管專案一致。
+1. 在 root workspace 先確認目標專案與最小可交付範圍。
+2. 進入目標 repository 後優先完成可上線 MVP 所需最短路徑。
+3. 只在確實有助於交付速度時，才擴充 root 層共享規則或工具。
+4. 新增受管 repo 時，再同步更新 `repos/index.json` 與 `.workspace/router.json`。
