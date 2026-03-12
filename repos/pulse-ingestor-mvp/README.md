@@ -104,6 +104,61 @@ app/
 `pulse_backfill_history` 預設會從 `AI新聞脈動PLUS` 讀取歷史信件並回補到 SQLite。
 這個動作是明確工具呼叫，不會在 MCP server 啟動時自動執行。
 
+## MCP Installation
+
+這個 repo 對外提供的是 `stdio MCP server`。最穩定的安裝方式是直接用 Docker 啟動，不依賴使用者本機 Python 套件版本。
+
+### Option A: Docker
+
+1. 複製 `.env.example` 成 `.env`
+2. 啟動基礎服務：
+
+```bash
+docker compose up -d api
+```
+
+3. 驗證 MCP 模組可載入：
+
+```bash
+docker compose run --rm -T mcp python -c "import app.mcp_server; print('mcp-import-ok')"
+```
+
+4. 以 stdio 啟動 MCP server：
+
+```bash
+docker compose run --rm -T mcp python -m app.mcp_server
+```
+
+### Option B: Local Python
+
+如果你不使用 Docker，也可以直接在本機安裝：
+
+```bash
+pip install .
+python -m app.mcp_server
+```
+
+這種方式要求你本機環境已具備：
+
+- Python 3.11+
+- 可安裝 `fastmcp`
+- 正確的 `.env`
+
+### Client Config Example
+
+若你的 MCP client 支援 stdio 設定，可使用：
+
+```toml
+[mcp_servers.pulseIngestor]
+command = "docker"
+args = ["compose", "run", "--rm", "-T", "mcp", "python", "-m", "app.mcp_server"]
+cwd = "repos/pulse-ingestor-mvp"
+enabled = true
+required = false
+startup_timeout_sec = 30
+tool_timeout_sec = 60
+```
+
 ## Connect From Codex
 
 這個 repo 已提供 repo-scoped MCP 設定檔 [`.codex/config.toml`](.codex/config.toml)。
@@ -129,6 +184,57 @@ app/
 
 - `docker compose run --rm -T mcp python -c "import app.mcp_server; print('mcp-import-ok')"`
 - `docker compose ps`
+
+## Sponsorship
+
+這個 repo 是公開庫，適合同時走兩條收入線：
+
+- 個人贊助：支持持續維護、文件、修 bug、功能迭代
+- 商業服務：客製整合、顧問、代部署、企業內部 workflow 建置
+
+目前 repo 已加入 GitHub Sponsors 設定：
+
+- [`.github/FUNDING.yml`](.github/FUNDING.yml)
+
+建議你的公開說法保持簡潔直接：
+
+- 如果這個專案對你有幫助，可以透過 GitHub Sponsors 支持維護
+- 如果你需要客製 email ingestion、MCP 工具化、LLM decision workflow、部署與顧問服務，可以直接聯絡作者
+
+### Maintainer Steps
+
+1. 在 GitHub 啟用 `monkey1sai` 的 GitHub Sponsors 頁面
+2. 在 repo 首頁確認 `Sponsor` 按鈕已出現
+3. 在 GitHub profile 或 repo 補上聯絡方式
+4. 把服務範圍寫清楚，不要只寫「可接案」
+
+### Recommended Service Menu
+
+- ChatGPT / email pulse ingestion 客製整合
+- MCP server 封裝與 agent tooling
+- LLM decision pipeline 設計
+- FastAPI + SQLite / Postgres 部署
+- 企業內部知識流與通知流整合
+
+### Recommended Offer Structure
+
+- `Sponsor`
+  適合開源使用者，小額持續支持
+- `Setup Package`
+  適合想快速導入的人，包含安裝、環境設定、基本驗證
+- `Custom Integration`
+  適合有內部流程需求的團隊，按功能或按週期收費
+- `Advisory / Consulting`
+  適合需要架構、資料流、MCP / agent 策略設計的客戶
+
+### README CTA Example
+
+你可以直接把下面這段放在 repo 首頁或 profile：
+
+```text
+If this project helps your workflow, consider sponsoring maintenance.
+If you need custom MCP, email-ingestion, or LLM decision-system integration, I also offer implementation and advisory services.
+```
 
 ## Environment Variables
 
