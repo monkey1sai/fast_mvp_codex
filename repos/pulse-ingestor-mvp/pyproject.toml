@@ -1,0 +1,15 @@
+[project]
+name = "pulse-ingestor-mvp"
+version = "0.1.0"
+description = "Passive ingestion of ChatGPT task emails into structured pulse events."
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi>=0.116,<1.0",
+  "uvicorn[standard]>=0.35,<1.0",
+  "pydantic>=2.11,<3.0",
+  "httpx>=0.28,<1.0",
+]
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"

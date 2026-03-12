@@ -14,6 +14,8 @@ venv/
 repos/*
 !repos/README.md
 !repos/index.json
+!repos/pulse-ingestor-mvp/
+!repos/pulse-ingestor-mvp/**
 
 # Root supervisor runtime artifacts
 codex-supervisor-mvp/state/*

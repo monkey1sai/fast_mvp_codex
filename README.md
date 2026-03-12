@@ -13,7 +13,7 @@ root repo 主要追蹤：
 - `agents/`：共享輕量角色提示
 - `repos/index.json`：受管專案登錄
 
-真正的產品開發與 git 歷史應保留在 `repos/<project-name>` 內的子 repository。
+真正的產品開發放在 `repos/<project-name>` 內；是否獨立 git repo 依 root 管理策略決定。
 
 ## 核心原則
 
@@ -43,10 +43,10 @@ C:\.codex_code_project
 
 ## Managed Repos
 
-所有受管專案都放在 `repos/` 底下，並保有各自獨立的 git 歷史與 remote。
+所有受管專案都放在 `repos/` 底下，由 root workspace 統一管理；是否維持獨立 git 歷史可依專案需要調整。
 
 目前已登錄：
-- 無
+- `pulse-ingestor-mvp`
 
 參考檔案：
 - `repos/index.json`
@@ -54,13 +54,13 @@ C:\.codex_code_project
 
 ## Git 管理模型
 
-root repository 與每一個受管 repository 是刻意分開管理的。
+root repository 可以同時管理管理層檔案與 `repos/` 底下的小型專案。
 
 規則：
-- root git 只追蹤管理層與 root 工具
-- `repos/` 底下的子 repo 保有自己的 `.git` 目錄
-- root `.gitignore` 預設排除 nested repo 的內容
-- 專案程式碼的 `pull`、`merge`、`push` 應在子 repo 內執行
+- root git 可直接追蹤 `repos/` 內受管的小型專案
+- 若某個專案需要獨立生命週期，再另行拆成獨立 repo
+- root `.gitignore` 可對特定受管專案開放追蹤
+- 專案程式碼的版本管理以 root repo 為準，除非該專案被明確拆出
 
 ## Working Style
 
