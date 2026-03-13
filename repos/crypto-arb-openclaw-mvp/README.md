@@ -114,6 +114,41 @@ python -m app.live_validation_cli --exchange okx --symbol BTC_USDT --price-sourc
 
 後續若要真連線，需要安裝 WebSocket client 套件並使用 `COINGECKO_PRO_API_KEY`。
 
+### Docker Runtime Mapping
+
+這個 repo 現在有自己的 Docker Compose。`runtime/*.jsonl` 會直接 bind mount 到 workspace 的同一個目錄：
+
+- host: `repos/crypto-arb-openclaw-mvp/runtime`
+- container: `/app/runtime`
+
+也就是說，你在容器裡跑出的：
+
+- `/app/runtime/coingecko-live.jsonl`
+
+會直接出現在：
+
+- `repos/crypto-arb-openclaw-mvp/runtime/coingecko-live.jsonl`
+
+啟動方式：
+
+```bash
+cd repos/crypto-arb-openclaw-mvp
+docker compose --env-file ../../.env --env-file ../../.env.runtime up --build
+```
+
+只跑一次 monitor：
+
+```bash
+cd repos/crypto-arb-openclaw-mvp
+docker compose --env-file ../../.env --env-file ../../.env.runtime run --rm live-monitor
+```
+
+直接看輸出檔：
+
+```bash
+type runtime\\coingecko-live.jsonl
+```
+
 ## Environment
 
 複製 `.env.example` 到你自己的 `.env` 或 shell 環境後再接 live services：

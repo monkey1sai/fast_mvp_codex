@@ -1,0 +1,17 @@
+services:
+  live-monitor:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /app
+    environment:
+      COINGECKO_PRO_API_KEY: ${COINGECKO_PRO_API_KEY}
+      COINGECKO_WS_URL: ${COINGECKO_WS_URL:-wss://stream.coingecko.com/v1}
+      COINGECKO_WS_CHANNEL: ${COINGECKO_WS_CHANNEL:-CGSimplePrice}
+      COINGECKO_WS_COIN_IDS: ${COINGECKO_WS_COIN_IDS:-bitcoin,ethereum}
+      COINGECKO_WS_DURATION_SECONDS: ${COINGECKO_WS_DURATION_SECONDS:-300}
+    volumes:
+      - ./runtime:/app/runtime
+    command: >
+      python -m app.live_market_runner
+      --output /app/runtime/coingecko-live.jsonl
