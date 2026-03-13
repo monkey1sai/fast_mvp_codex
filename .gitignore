@@ -18,6 +18,8 @@ repos/*
 !repos/pulse-ingestor-mvp/**
 !repos/coingecko-openclaw-mcp/
 !repos/coingecko-openclaw-mcp/**
+!repos/crypto-arb-openclaw-mvp/
+!repos/crypto-arb-openclaw-mvp/**
 
 # Root supervisor runtime artifacts
 codex-supervisor-mvp/state/*

@@ -1,0 +1,12 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "crypto-arb-openclaw-mvp"
+version = "0.1.0"
+description = "Deterministic crypto arbitrage MVP built around OpenClaw and MCP integrations."
+requires-python = ">=3.10"
+
+[tool.setuptools]
+packages = ["app", "app.execution", "app.integrations", "app.market_data"]

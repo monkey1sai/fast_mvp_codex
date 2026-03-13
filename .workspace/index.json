@@ -35,6 +35,11 @@
       "id": "coingecko_openclaw_mcp",
       "path": "repos/coingecko-openclaw-mcp",
       "purpose": "Managed repo for CoinGecko Pro MCP tools built for OpenClaw-compatible agents."
+    },
+    {
+      "id": "crypto_arb_openclaw_mvp",
+      "path": "repos/crypto-arb-openclaw-mvp",
+      "purpose": "Managed repo for deterministic crypto arbitrage strategy, simulation, and OpenClaw integration."
     }
   ],
   "ignore_patterns": [

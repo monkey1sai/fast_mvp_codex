@@ -24,6 +24,11 @@
       "path": "repos/coingecko-openclaw-mcp",
       "purpose": "CoinGecko Pro MCP for OpenClaw-compatible crypto agents",
       "notes": "Use this repo for stdio MCP development, CoinGecko Pro client code, and crypto market intelligence tools."
+    },
+    {
+      "path": "repos/crypto-arb-openclaw-mvp",
+      "purpose": "Deterministic crypto arbitrage MVP coordinated by OpenClaw",
+      "notes": "Use this repo for arbitrage strategy logic, simulation, risk controls, and integration contracts for CoinGecko/Pulse/OpenClaw."
     }
   ]
 }

@@ -15,6 +15,13 @@
       "path": "C:\\fast_mvp_codex\\repos\\coingecko-openclaw-mcp",
       "type": "managed-repo",
       "purpose": "CoinGecko Pro market intelligence MCP server for OpenClaw-compatible agents."
+    },
+    {
+      "id": "crypto_arb_openclaw_mvp",
+      "name": "crypto-arb-openclaw-mvp",
+      "path": "C:\\fast_mvp_codex\\repos\\crypto-arb-openclaw-mvp",
+      "type": "managed-repo",
+      "purpose": "Deterministic crypto arbitrage MVP using OpenClaw as control plane and MCP tools as data layer."
     }
   ]
 }
