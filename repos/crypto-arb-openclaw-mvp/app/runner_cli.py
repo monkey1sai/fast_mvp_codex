@@ -29,6 +29,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--price-source", choices=["okx", "coingecko"], help="Override price source.")
     parser.add_argument("--coingecko-coin-id", help="Override CoinGecko coin id.")
     parser.add_argument("--telemetry-path", help="Override JSONL telemetry output path.")
+    parser.add_argument("--event-log-path", help="Override event JSONL log output path.")
     parser.add_argument("--confirm-live", action="store_true", help="Explicitly approve live order flow.")
     return parser
 
@@ -52,6 +53,8 @@ def main() -> None:
         runner_config.coingecko_coin_id = args.coingecko_coin_id
     if args.telemetry_path:
         runner_config.telemetry_path = args.telemetry_path
+    if args.event_log_path:
+        runner_config.event_log_path = args.event_log_path
     if args.confirm_live:
         runner_config.explicit_confirmation = True
 
@@ -69,6 +72,7 @@ def main() -> None:
             {
                 "cycles": len(records),
                 "telemetry_path": runner_config.telemetry_path,
+                "event_log_path": runner_config.event_log_path,
                 "last_result": records[-1]["result"] if records else {},
             },
             ensure_ascii=False,

@@ -14,7 +14,13 @@ class _FakeExecution:
         self.order_ids: list[str] = []
 
     def get_position(self, symbol: str):
-        return PositionState(symbol=symbol, base_qty=0.0, quote_value_usd=0.0, open_orders=0)
+        return PositionState(
+            symbol=symbol,
+            base_qty=1.0,
+            quote_value_usd=0.0,
+            open_orders=0,
+            available_quote_usd=100.0,
+        )
 
     def get_symbol_constraints(self, symbol: str):
         return {}
@@ -64,6 +70,7 @@ class RunnerTests(unittest.TestCase):
                 cycle_count=2,
                 poll_interval_ms=1,
                 telemetry_path=telemetry_path,
+                event_log_path=f"{tmpdir}/events.jsonl",
                 explicit_confirmation=True,
             )
             records = run_hft_cycles(
@@ -93,6 +100,7 @@ class RunnerTests(unittest.TestCase):
                 cycle_count=1,
                 poll_interval_ms=1,
                 telemetry_path=f"{tmpdir}/runner.jsonl",
+                event_log_path=f"{tmpdir}/events.jsonl",
                 explicit_confirmation=True,
             )
             records = run_hft_cycles(

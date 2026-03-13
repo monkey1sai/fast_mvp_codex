@@ -21,7 +21,13 @@ class _FakeExecution:
         return {"cancelled": True, "symbol": symbol, "order_id": order_id}
 
     def get_position(self, symbol: str):
-        return PositionState(symbol=symbol, base_qty=0.0, quote_value_usd=0.0, open_orders=0)
+        return PositionState(
+            symbol=symbol,
+            base_qty=1.0,
+            quote_value_usd=0.0,
+            open_orders=0,
+            available_quote_usd=100.0,
+        )
 
     def get_symbol_constraints(self, symbol: str):
         return {}
@@ -57,6 +63,7 @@ class LiveValidationRunnerTests(unittest.TestCase):
         )
         self.assertEqual(result["placed_orders"], 1)
         self.assertEqual(len(execution.placed), 1)
+        self.assertTrue(any(event["stage"] == "place_order_request" for event in result["events"]))
 
     def test_does_not_place_when_halt(self) -> None:
         execution = _FakeExecution({"result": True, "data": {"orderId": "abc"}, "status": "filled"})
@@ -84,6 +91,7 @@ class LiveValidationRunnerTests(unittest.TestCase):
         self.assertEqual(result["cancelled_orders"], 1)
         self.assertEqual(execution.cancelled, [("BTC_USDT", "abc")])
         self.assertEqual(result["cancel_after_ms"], 3000)
+        self.assertTrue(any(event["stage"] == "cancel_order_result" for event in result["events"]))
 
     def test_okx_style_result_payload_is_supported(self) -> None:
         execution = _FakeExecution({"code": "0", "data": [{"ordId": "okx-1", "state": "resting"}]})
@@ -153,6 +161,32 @@ class LiveValidationRunnerTests(unittest.TestCase):
         self.assertEqual(result["placed_orders"], 0)
         self.assertEqual(result["reason"], "no quote passed live guard")
         self.assertEqual(result["min_notional_usd"], 10.0)
+
+    def test_returns_guard_failure_when_available_quote_balance_insufficient(self) -> None:
+        class _LowBalanceExecution(_FakeExecution):
+            def get_position(self, symbol: str):
+                return PositionState(
+                    symbol=symbol,
+                    base_qty=0.0,
+                    quote_value_usd=0.0,
+                    open_orders=0,
+                    available_quote_usd=2.0,
+                )
+
+        execution = _LowBalanceExecution({"result": True, "data": {"orderId": "abc"}, "status": "filled"})
+        result = run_live_validation_cycle(
+            book=self.book,
+            kill_switch=self.kill,
+            execution=execution,
+            live_config=self.config,
+            explicit_confirmation=True,
+            daily_loss_usd=0.0,
+        )
+        self.assertEqual(result["placed_orders"], 0)
+        self.assertEqual(result["reason"], "no quote passed live guard")
+        guard_events = [event for event in result["events"] if event["stage"] == "guard_decision"]
+        self.assertTrue(any("insufficient available quote balance" in event["reasons"] for event in guard_events))
+        self.assertTrue(any("insufficient available base balance" in event["reasons"] for event in guard_events))
 
 
 if __name__ == "__main__":

@@ -71,7 +71,8 @@ def load_live_trading_config() -> LiveTradingConfig:
 
 
 def load_runner_config() -> RunnerConfig:
-    runtime_dir = Path(__file__).resolve().parents[1] / "runtime"
+    workspace_root = Path(__file__).resolve().parents[2]
+    log_dir = workspace_root / "log"
     return RunnerConfig(
         symbol=os.getenv("RUNNER_SYMBOL", os.getenv("TRADING_PAIR", "BTC_USDT")),
         price_source=os.getenv("RUNNER_PRICE_SOURCE", "okx"),
@@ -83,7 +84,11 @@ def load_runner_config() -> RunnerConfig:
         ),
         telemetry_path=os.getenv(
             "RUNNER_TELEMETRY_PATH",
-            str(runtime_dir / "hft-runner.jsonl"),
+            str(log_dir / "hft-runner.jsonl"),
+        ),
+        event_log_path=os.getenv(
+            "RUNNER_EVENT_LOG_PATH",
+            str(log_dir / "hft-events.jsonl"),
         ),
         explicit_confirmation=_bool_env("RUNNER_CONFIRM_LIVE", False),
     )

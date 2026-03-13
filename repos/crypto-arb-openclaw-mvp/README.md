@@ -64,7 +64,8 @@ python -m app.live_validation_cli --exchange okx --symbol BTC_USDT --price-sourc
 - 抓取 `OKX` 公開 ticker 或 `CoinGecko` reference price
 - 經過現有 live guard
 - 走單輪 `place -> wait -> get_order -> cancel`
-- 把每輪結果寫到 `runtime/hft-runner.jsonl`
+- 把每輪摘要寫到 `C:\fast_mvp_codex\log\hft-runner.jsonl`
+- 把逐步事件寫到 `C:\fast_mvp_codex\log\hft-events.jsonl`
 
 最小入口：
 
@@ -88,7 +89,21 @@ runner 產出欄位包含：
 
 輸出檔預設位置：
 
-- `repos/crypto-arb-openclaw-mvp/runtime/hft-runner.jsonl`
+- `C:\fast_mvp_codex\log\hft-runner.jsonl`
+- `C:\fast_mvp_codex\log\hft-events.jsonl`
+
+事件日誌會包含：
+
+- `market_query`
+- `kill_switch`
+- `position_snapshot`
+- `symbol_constraints`
+- `quote_candidates`
+- `guard_decision`
+- `place_order_request`
+- `place_order_result`
+- `get_order_result`
+- `cancel_order_result`
 
 ## Replay / Observability
 

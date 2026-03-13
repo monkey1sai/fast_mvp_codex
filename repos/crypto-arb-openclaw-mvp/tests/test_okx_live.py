@@ -77,6 +77,42 @@ class OkxLiveTests(unittest.TestCase):
         self.assertIsNone(calls[0]["body"])
         self.assertEqual(result["data"][0]["state"], "live")
 
+    def test_get_position_uses_balance_and_pending_orders(self) -> None:
+        calls: list[dict] = []
+
+        def fake_transport(method: str, url: str, headers: dict[str, str], body: str | None) -> dict:
+            calls.append({"method": method, "url": url, "headers": headers, "body": body})
+            if "/api/v5/account/balance" in url:
+                return {
+                    "code": "0",
+                    "data": [
+                        {
+                            "details": [
+                                {"ccy": "BTC", "eq": "0.001", "eqUsd": "72.5"},
+                                {"ccy": "USDT", "availBal": "12.34", "eqUsd": "12.34"},
+                            ]
+                        }
+                    ],
+                }
+            return {"code": "0", "data": [{"ordId": "1"}, {"ordId": "2"}]}
+
+        adapter = OkxLiveExecution(
+            api_key="demo-key",
+            api_secret="demo-secret",
+            passphrase="demo-passphrase",
+            transport=fake_transport,
+        )
+
+        position = adapter.get_position("BTC_USDT")
+
+        self.assertEqual(calls[0]["method"], "GET")
+        self.assertIn("/api/v5/account/balance?ccy=BTC%2CUSDT", calls[0]["url"])
+        self.assertIn("/api/v5/trade/orders-pending?instId=BTC-USDT", calls[1]["url"])
+        self.assertAlmostEqual(position.base_qty, 0.001)
+        self.assertAlmostEqual(position.quote_value_usd, 72.5)
+        self.assertAlmostEqual(position.available_quote_usd, 12.34)
+        self.assertEqual(position.open_orders, 2)
+
 
 if __name__ == "__main__":
     unittest.main()

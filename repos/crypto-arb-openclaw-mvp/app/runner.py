@@ -52,11 +52,33 @@ def run_hft_cycles(
     for cycle in range(1, runner_config.cycle_count + 1):
         started = time.perf_counter()
         book = resolve_book_top(runner_config, okx_market=okx_market, coingecko_market=coingecko_market)
+        append_jsonl(
+            runner_config.event_log_path,
+            {
+                "ts": _utc_now(),
+                "cycle": cycle,
+                "stage": "market_query",
+                "price_source": runner_config.price_source,
+                "symbol": runner_config.symbol,
+                "book": asdict(book),
+            },
+        )
         daily_drawdown_pct = 0.0
         kill_switch: KillSwitchState = derive_kill_switch(
             pulse_signals=pulse_signals,
             daily_drawdown_pct=daily_drawdown_pct,
             entropy_threshold=strategy_config.stop_on_pulse_entropy,
+        )
+        append_jsonl(
+            runner_config.event_log_path,
+            {
+                "ts": _utc_now(),
+                "cycle": cycle,
+                "stage": "kill_switch",
+                "price_source": runner_config.price_source,
+                "symbol": runner_config.symbol,
+                "kill_switch": asdict(kill_switch),
+            },
         )
         result = run_live_validation_cycle(
             book=book,
@@ -67,6 +89,17 @@ def run_hft_cycles(
             daily_loss_usd=daily_loss_usd,
         )
         elapsed_ms = round((time.perf_counter() - started) * 1000, 2)
+        for event in result.get("events", []):
+            append_jsonl(
+                runner_config.event_log_path,
+                {
+                    "ts": _utc_now(),
+                    "cycle": cycle,
+                    "price_source": runner_config.price_source,
+                    "symbol": runner_config.symbol,
+                    **event,
+                },
+            )
         record = {
             "ts": _utc_now(),
             "cycle": cycle,

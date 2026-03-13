@@ -81,6 +81,7 @@ class PositionState:
     base_qty: float
     quote_value_usd: float
     open_orders: int
+    available_quote_usd: float = 0.0
 
     @property
     def net_exposure_usd(self) -> float:
@@ -121,6 +122,7 @@ class RunnerConfig:
     cycle_count: int
     poll_interval_ms: int
     telemetry_path: str
+    event_log_path: str
     explicit_confirmation: bool
 
 

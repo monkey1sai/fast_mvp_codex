@@ -61,4 +61,36 @@ class OkxLiveExecution(ExecutionAdapter):
         return self.auth.transport("GET", url, self.auth._headers("GET", request_path), None)
 
     def get_position(self, symbol: str) -> PositionState:
-        return PositionState(symbol=symbol, base_qty=0.0, quote_value_usd=0.0, open_orders=0)
+        base_ccy, quote_ccy = symbol.split("_", 1)
+
+        balance_path = f"/api/v5/account/balance?{urllib.parse.urlencode({'ccy': f'{base_ccy},{quote_ccy}'})}"
+        balance_url = f"{self.auth.api_base_url}{balance_path}"
+        balance_payload = self.auth.transport("GET", balance_url, self.auth._headers("GET", balance_path), None)
+
+        detail_rows: list[dict] = []
+        for account_row in balance_payload.get("data", []):
+            detail_rows.extend(account_row.get("details", []))
+
+        base_qty = 0.0
+        quote_value_usd = 0.0
+        available_quote_usd = 0.0
+        for row in detail_rows:
+            ccy = str(row.get("ccy", "")).upper()
+            if ccy == base_ccy.upper():
+                base_qty = float(row.get("eq", row.get("cashBal", 0.0)) or 0.0)
+                quote_value_usd = float(row.get("eqUsd", 0.0) or 0.0)
+            if ccy == quote_ccy.upper():
+                available_quote_usd = float(row.get("availBal", 0.0) or 0.0)
+
+        pending_path = f"/api/v5/trade/orders-pending?{urllib.parse.urlencode({'instId': to_okx_inst_id(symbol)})}"
+        pending_url = f"{self.auth.api_base_url}{pending_path}"
+        pending_payload = self.auth.transport("GET", pending_url, self.auth._headers("GET", pending_path), None)
+        open_orders = len(pending_payload.get("data", []))
+
+        return PositionState(
+            symbol=symbol,
+            base_qty=base_qty,
+            quote_value_usd=quote_value_usd,
+            open_orders=open_orders,
+            available_quote_usd=available_quote_usd,
+        )
