@@ -114,6 +114,17 @@ class LiveGuardDecision:
 
 
 @dataclass(slots=True)
+class RunnerConfig:
+    symbol: str
+    price_source: str
+    coingecko_coin_id: str
+    cycle_count: int
+    poll_interval_ms: int
+    telemetry_path: str
+    explicit_confirmation: bool
+
+
+@dataclass(slots=True)
 class CycleDecision:
     action: str
     estimated_net_profit_bps: float

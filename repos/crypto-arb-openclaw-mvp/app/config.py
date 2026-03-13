@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 import os
+from pathlib import Path
 
-from app.models import LiveTradingConfig, StrategyConfig
+from app.models import LiveTradingConfig, RunnerConfig, StrategyConfig
 
 
 def _float_env(name: str, default: float) -> float:
@@ -66,4 +67,23 @@ def load_live_trading_config() -> LiveTradingConfig:
         max_daily_loss_usd=_float_env("MAX_DAILY_LOSS_USD", 1.0),
         auto_cancel_after_ms=_int_env("AUTO_CANCEL_AFTER_MS", 3000),
         require_explicit_confirmation=_bool_env("REQUIRE_EXPLICIT_CONFIRMATION", True),
+    )
+
+
+def load_runner_config() -> RunnerConfig:
+    runtime_dir = Path(__file__).resolve().parents[1] / "runtime"
+    return RunnerConfig(
+        symbol=os.getenv("RUNNER_SYMBOL", os.getenv("TRADING_PAIR", "BTC_USDT")),
+        price_source=os.getenv("RUNNER_PRICE_SOURCE", "okx"),
+        coingecko_coin_id=os.getenv("RUNNER_COINGECKO_COIN_ID", "bitcoin"),
+        cycle_count=_int_env("RUNNER_CYCLE_COUNT", 10),
+        poll_interval_ms=_int_env(
+            "RUNNER_POLL_INTERVAL_MS",
+            _int_env("QUOTE_REFRESH_MS", 1200),
+        ),
+        telemetry_path=os.getenv(
+            "RUNNER_TELEMETRY_PATH",
+            str(runtime_dir / "hft-runner.jsonl"),
+        ),
+        explicit_confirmation=_bool_env("RUNNER_CONFIRM_LIVE", False),
     )

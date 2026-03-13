@@ -57,6 +57,59 @@ python -m app.live_validation_cli --exchange okx --symbol BTC_USDT --price-sourc
 - `BTC_USDT` 目前最小下單金額是 `10 USDT`；若低於交易所門檻，系統會在送單前直接拒絕
 - `OKX` live 路徑已驗證可成功下單並查單；若 3 秒內未成交，系統會走查單後撤單
 
+## Continuous Runner
+
+目前已補一個本地可長跑的 `OKX` 連續循環 runner。它會持續：
+
+- 抓取 `OKX` 公開 ticker 或 `CoinGecko` reference price
+- 經過現有 live guard
+- 走單輪 `place -> wait -> get_order -> cancel`
+- 把每輪結果寫到 `runtime/hft-runner.jsonl`
+
+最小入口：
+
+```bash
+python -m app.runner_cli --cycles 10 --symbol BTC_USDT --price-source okx --confirm-live
+```
+
+改用 `CoinGecko` 當 reference price：
+
+```bash
+python -m app.runner_cli --cycles 10 --symbol BTC_USDT --price-source coingecko --coingecko-coin-id bitcoin --confirm-live
+```
+
+runner 產出欄位包含：
+
+- `cycle`
+- `latency_ms`
+- `kill_switch`
+- `book`
+- `result`
+
+輸出檔預設位置：
+
+- `repos/crypto-arb-openclaw-mvp/runtime/hft-runner.jsonl`
+
+## Replay / Observability
+
+目前已補最小 replay summary，可直接從 `runtime/hft-runner.jsonl` 讀出執行摘要：
+
+```bash
+python -m app.replay_cli --telemetry-path runtime/hft-runner.jsonl
+```
+
+輸出欄位包含：
+
+- `cycles`
+- `placed_orders`
+- `cancelled_orders`
+- `halt_cycles`
+- `guard_reject_cycles`
+- `avg_latency_ms`
+- `max_latency_ms`
+- `price_sources`
+- `symbols`
+
 ## OKX Auth Smoke Test
 
 如果你要先切到 `OKX`，先只驗證 API key / secret / passphrase 是否可用，不碰下單。
@@ -176,4 +229,6 @@ MAX_DAILY_DRAWDOWN_PCT=0.1
 ```bash
 python -m unittest discover -s tests
 python -m app.cli
+python -m app.runner_cli --help
+python -m app.replay_cli --telemetry-path runtime/hft-runner.jsonl
 ```
