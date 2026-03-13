@@ -125,6 +125,38 @@ python -m app.replay_cli --telemetry-path runtime/hft-runner.jsonl
 - `price_sources`
 - `symbols`
 
+## 24h 即時監看
+
+如果你要直接盯 `OpenClaw` 的 24 小時 runner，不用手動 `tail`，可用：
+
+```bash
+python -m app.monitor_cli --follow --refresh-seconds 2 --clear-screen
+```
+
+若要讓 OpenClaw / Docker 容器內直接監看，可用：
+
+```bash
+scripts/watch_openclaw_runner.sh 2
+```
+
+預設會讀：
+
+- `C:\fast_mvp_codex\log\openclaw-runner.jsonl`
+- `C:\fast_mvp_codex\log\openclaw-events.jsonl`
+
+你會看到：
+
+- 最新 cycle 摘要
+- 最新買賣方向
+- 最新 order state / order id
+- 最近事件流，例如 `market_query`、`guard_decision`、`place_order_result`、`cancel_order_result`
+
+若只想看一次快照：
+
+```bash
+python -m app.monitor_cli
+```
+
 ## OKX Auth Smoke Test
 
 如果你要先切到 `OKX`，先只驗證 API key / secret / passphrase 是否可用，不碰下單。
